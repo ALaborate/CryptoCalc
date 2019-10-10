@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <title>
+        RSA Calculations
+    </title>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            /* border: 1px solid gray; */
+            border-collapse: collapse;
+            margin: 6px auto;
+            border-spacing: 0px;
+        }
+
+        table th,
+        table td {
+            /* border-collapse: collapse; */
+            border: 2px solid gray;
+            padding: 2px;
+            margin: 0px;
+            background-color: white;
+        }
+
+        #main {
+            box-sizing: border-box;
+            border: 2px solid gray;
+            background-color: lightgray;
+            width: 100%;
+            height: auto;
+            padding: 4px;
+        }
+
+        form label, form button{
+            font-size: 2em;
+        }
+        form input{
+            font-size: 1em;
+        }
+    </style>
+</head>
+<script src="active.js" defer></script>
+<body>
+    <div id=main>
+        <form>
+            <h1>RSA simple calculator</h1>
+            <label>Type in N (system modulo):&nbsp;
+                <input type="number" , id="modulo">
+            </label>
+            <button onclick="Calculate();" type="button">Calculate!</button>
+        </form><br>
+
+
+        <div id="phi_N">&#x3d5;(N):&nbsp;?</div>
+        <div id="L_N">L(N):&nbsp;?</div>
+        <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
+        <div id="L_L_N">L(L(N)):&nbsp;?</div>
+        <table id="keyGroup">
+            <tr>
+                <th>Element</th>
+                <th>Order</th>
+            </tr>
+        </table>
+        <table id="keyPairs">
+            <tr>
+                <th>Encryption</th>
+                <th>Decription</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>
