@@ -192,9 +192,34 @@ function GenericEuler(numb, primes) {
         return Euler(Math.pow(v[0], v[1]));
     }));
 }
+/**
+ * 
+ * @param {Number} modulo 
+ */
+function MakeMultiplicativeGroup(modulo) {
+    var factorization = PoweredPrimeFactors(PrimeFactors(modulo));
+    var group = [1];
+    for (var i = 2; i < modulo; i++) {
+        var divides = false;
+        factorization.forEach((v) => {
+            if (i % v[0] == 0)
+                divides = true;
+        });
+        if (!divides) {
+            group.push(i);
+        }
+    }
+    return group;
+}
 
-var needTesting = false; //true to enable assertions
+var needTesting = true; //true to enable assertions
 if (needTesting) {
+    console.assert(Order(1, 17) == 0, "Order of 1");
+
+    console.assert(MakeMultiplicativeGroup(11 * 13).length == Euler(11 * 13), "length of multiplicative group equals Euler(modulus)");
+    console.assert(MakeMultiplicativeGroup(7 * 5).length == Euler(7 * 5), "length of multiplicative group equals Euler(modulus)");
+    console.assert(MakeMultiplicativeGroup(31).length == Euler(31), "length of multiplicative group equals Euler(modulus)");
+
     console.assert(Euler(15) == 8, "Unit testing");
     console.assert(Euler(1) == 0, "Unit testing");
     console.assert(Euler(8) == 4, "Unit testing");
@@ -253,22 +278,11 @@ function Calculate() {
     var val_modulo = Number(document.getElementById("modulo").value);
     var val_factorization = PoweredPrimeFactors(PrimeFactors(val_modulo));
     if (val_factorization.length != 2) {
-        alert("Beware, N is not a product of two primes!");
+        alert("Be advised, N is not a product of two primes! RSA keys would be messed up!");
     }
 
     var keyModulo = GenericEuler(val_modulo);
-    var factorization = PoweredPrimeFactors(PrimeFactors(keyModulo));
-    var keygroup = [1];
-    for (var i = 2; i < keyModulo; i++) {
-        var divides = false;
-        factorization.forEach((v) => {
-            if (i % v[0] == 0)
-                divides = true;
-        });
-        if (!divides) {
-            keygroup.push(i);
-        }
-    }
+    var keygroup = MakeMultiplicativeGroup(keyModulo);
 
     var orders = keygroup.map((v) => {
         return Order(v, keyModulo);
@@ -293,6 +307,9 @@ function Calculate() {
         }
     }
 
+    var valGroup = MakeMultiplicativeGroup(val_modulo);
+    valGroup = valGroup.map((v) => { return [v, Order(v, val_modulo)]; });
+
 
     document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(val_modulo) + ";";
     document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + keyModulo + ";";
@@ -313,14 +330,20 @@ function Calculate() {
     }
 
     var table = document.getElementById("keyGroup");
-    table.innerHTML = "<tr><th>Element</th><th>Order</th></tr>\n";
+    table.innerHTML = "<caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>\n<tr><th>Element</th><th>Order</th></tr>\n";
     for (var i = 0; i < orders.length && i < keygroup.length; i++) {
         table.innerHTML += "<tr><td>" + keygroup[i] + "</td><td>" + orders[i] + "</td></tr>\n";
     }
 
     table = document.getElementById("keyPairs");
-    table.innerHTML = "<tr><th>Encryption</th><th>Decription</th></tr>";
+    table.innerHTML = "<caption>Key pairs for RSA</caption>\n<tr><th>Encryption</th><th>Decription</th></tr>";
     keys.forEach((pair) => {
+        table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+    });
+
+    table = document.getElementById("valGroup");
+    table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
+    valGroup.forEach((pair) => {
         table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
     });
 
