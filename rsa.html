@@ -337,7 +337,17 @@
     }
 
     function Calculate() {
-        var expr = eval(document.getElementById("modulo").value);
+        var expr;
+        try {
+            expr = eval(document.getElementById("modulo").value);
+            if (isNaN(expr))
+                throw "Input is not a number!";
+        }
+        catch{
+            alert("Your input is not valid. Please type in correct js string that evaluates to number.");
+            return;
+        }
+
         var valModulo = Number(expr);
         var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
         if (valFactorization.length != 2) {
@@ -483,12 +493,13 @@
         </form><br>
 
         <div id="N">N: ?</div>
+        <div id="fact_N">Factorization(N): </div>
         <div id="phi_N">&#x3d5;(N):&nbsp;?</div>
         <div id="L_N">L(N):&nbsp;?</div>
-        <div id="fact_N">Factorization(N): </div>
+        <div id="fact_L_N">Factorization(L(N)):&nbsp;[?]</div>
         <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
         <div id="L_L_N">L(L(N)):&nbsp;?</div>
-        <div id="fact_L_N">Factorization(L(N)):&nbsp;[?]</div>
+        
         <table id="keyGroup">
             <caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>
             <tr>
