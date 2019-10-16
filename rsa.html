@@ -248,8 +248,18 @@
      * 
      * @param {Number} modulo 
      */
-    function MakeMultiplicativeGroup(modulo) {
-        var factorization = PoweredPrimeFactors(PrimeFactors(modulo));
+    function MakeMultiplicativeGroup(modulo, factorization) {
+
+        if (factorization == undefined) {
+            factorization = PoweredPrimeFactors(PrimeFactors(modulo));
+        } else {
+            var prod = 1;
+            factorization.forEach((v) => { prod *= Math.pow(v[0], v[1]); });
+            if (prod != modulo) {
+                factorization = PoweredPrimeFactors(PrimeFactors(modulo));
+            }
+        }
+
         var group = [1];
         for (var i = 2; i < modulo; i++) {
             var divides = false;
@@ -328,14 +338,15 @@
 
     function Calculate() {
         var expr = eval(document.getElementById("modulo").value);
-        var val_modulo = Number(expr);
-        var val_factorization = PoweredPrimeFactors(PrimeFactors(val_modulo));
-        if (val_factorization.length != 2) {
+        var valModulo = Number(expr);
+        var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
+        if (valFactorization.length != 2) {
             alert("Be advised, N is not a product of two primes! RSA keys would be messed up!");
         }
 
-        var keyModulo = GenericEuler(val_modulo);
-        var keygroup = MakeMultiplicativeGroup(keyModulo);
+        var keyModulo = GenericEuler(valModulo);
+        var keyModuloFactorization = PoweredPrimeFactors(PrimeFactors(keyModulo));
+        var keygroup = MakeMultiplicativeGroup(keyModulo, keyModuloFactorization);
 
         var orders = keygroup.map((v) => {
             return Order(v, keyModulo);
@@ -360,11 +371,11 @@
             }
         }
 
-        var valGroup = MakeMultiplicativeGroup(val_modulo);
-        valGroup = valGroup.map((v) => { return [v, Order(v, val_modulo)]; });
+        var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
+        valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
 
-        document.getElementById("N").innerHTML = "N: " + val_modulo;
-        document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(val_modulo) + "; <span class=\"comment\">Size of group of values</span>";
+        document.getElementById("N").innerHTML = "N: " + valModulo;
+        document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group of values</span>";
         document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + keyModulo + "; <span class=\"comment\">Maximum element order in group of values, also modulo of group of keys</span>";
         document.getElementById("phi_L_N").innerHTML = "&#x3d5;(L(N)):&nbsp;" + Euler(keyModulo) + "; <span class=\"comment\">Size of group of keys</span>";
         var maxorder = -1;
@@ -383,8 +394,8 @@
             element.innerHTML = leadString;
         }
 
-        showFactorization(document.getElementById("fact_N"), val_factorization, "Factorization(N):");
-        showFactorization(document.getElementById("fact_L_N"), PoweredPrimeFactors(PrimeFactors(keyModulo)), "Factorization(L(N)):");
+        showFactorization(document.getElementById("fact_N"), valFactorization, "Factorization(N):");
+        showFactorization(document.getElementById("fact_L_N"), keyModuloFactorization, "Factorization(L(N)):");
 
         if (needTesting) {
             console.assert(keygroup.length == Euler(keyModulo), "Keygroup size equals phi(L(N))");
