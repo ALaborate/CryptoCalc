@@ -311,15 +311,15 @@ function Calculate() {
     valGroup = valGroup.map((v) => { return [v, Order(v, val_modulo)]; });
 
 
-    document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(val_modulo) + ";";
-    document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + keyModulo + ";";
-    document.getElementById("phi_L_N").innerHTML = "&#x3d5;(L(N)):&nbsp;" + Euler(keyModulo) + ";";
+    document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(val_modulo) + "; <span class=\"comment\">Size of group of values</span>";
+    document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + keyModulo + "; <span class=\"comment\">Maximum element order in group of values, also modulo of group of keys</span>";
+    document.getElementById("phi_L_N").innerHTML = "&#x3d5;(L(N)):&nbsp;" + Euler(keyModulo) + "; <span class=\"comment\">Size of group of keys</span>";
     var maxorder = -1;
     orders.forEach((v) => {
         if (v > maxorder)
             maxorder = v;
     });
-    document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + GenericEuler(keyModulo) + ";";
+    document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + GenericEuler(keyModulo) + "; <span class=\"comment\">Maximum order of element in group of keys.</span>";
 
     if (needTesting) {
         console.assert(keygroup.length == Euler(keyModulo), "Keygroup size equals phi(L(N))");
