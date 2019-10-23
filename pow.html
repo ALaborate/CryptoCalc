@@ -39,8 +39,8 @@
         }
         var res = Power(x, y, n);
         document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;" + res;
-        var checked = document.getElementById("alertAnswer").value;
-        if(checked=="on")
+        var checked = document.getElementById("alertAnswer").checked;
+        if(checked)
         {
             alert(res);
         }

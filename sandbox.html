@@ -80,8 +80,8 @@
         var code = document.getElementById("code").value;
         var ret = eval(code);
         CustomLog(ret);
-        var checked = document.getElementById("alertAnswer").value;
-        if(checked=="on")
+        var checked = document.getElementById("alertAnswer").checked;
+        if(checked)
         {
             alert(ret);
         }
