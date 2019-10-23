@@ -9,4 +9,4 @@ The main function is calculation of RSA key pairs along with supplementary infor
 
 You may download the only code file `rsa.html` from code directly or from latest release. Just keep in mind that releases here are often a bit outdated.
 
-Consider using [hosted version](omoh98.1mb.site) _if it is available to the time_ or download code from the latest release here on github. 
+Consider using [hosted version](https://omoh98.1mb.site) _if it is available to the time_ or download code from the latest release here on github. 
