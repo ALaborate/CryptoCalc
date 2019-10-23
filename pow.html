@@ -8,6 +8,7 @@
 
 <body>
     <div id="main">
+        <a href="index.html">Home</a>
         <form>
             <h1>X to the Yth power modulo N</h1>
             <label>X:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_x"></label>
@@ -20,7 +21,7 @@
 </body>
 <script type="text/javascript" defer>
     function myfunc(e) {
-        if (e.code == "Enter" || e.code=="NumpadEnter" )
+        if (e.code == "Enter" || e.code == "NumpadEnter")
             Calculate();
     }
     function Calculate() {
