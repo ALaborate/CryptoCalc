@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title>Multiplicative group modulo N</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="calc.js" defer></script>
+</head>
+
+<body>
+    <div id="main">
+        <h1>Multiplicative group modulo N</h1>
+        <form>
+            <label>Type in group modulo (N):
+                <input type="text" id="modulo" onkeydown="kd(event);">
+                <input type="text" hidden>
+            </label>
+            <button type="button" onclick="Calculate();">Calculate!</button>
+        </form>
+        <div id="N">N: ?</div>
+        <div id="fact_N">Factorization(N): </div>
+        <div id="phi_N">&#x3d5;(N):&nbsp;?</div>
+        <div id="L_N">L(N):&nbsp;?</div>
+        <table id="valGroup">
+            <caption>Multiplicative group modulo N <br>(Group of values)</caption>
+            <tr>
+                <th>Element</th>
+                <th>Order</th>
+            </tr>
+        </table>
+    </div>
+</body>
+<script defer>
+    function kd(e) {
+        if (e.code == "Enter" || e.code == "NumpadEnter")
+            Calculate();
+    }
+    function Calculate() {
+        var expr;
+        try {
+            expr = eval(document.getElementById("modulo").value);
+            if (isNaN(expr))
+                throw "Input is not a number!";
+        }
+        catch{
+            alert("Your input is not valid. Please type in correct js string that evaluates to number.");
+            return;
+        }
+
+        var valModulo = Number(expr);
+        var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
+
+        var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
+        valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
+
+        document.getElementById("N").innerHTML = "N: " + valModulo;
+        document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group</span>";
+        document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + GenericEuler(valModulo) + "; <span class=\"comment\">Maximum element order in group</span>";
+
+        var showFactorization = (element, factorization, leadString = "") => {
+            factorization.forEach((v) => {
+                leadString += " " + v[0] + "<sup>" + v[1] + "</sup>x";
+            });
+            leadString = leadString.substring(0, leadString.length - 1);
+            element.innerHTML = leadString;
+        }
+
+        showFactorization(document.getElementById("fact_N"), valFactorization, "Factorization(N):");
+
+        table = document.getElementById("valGroup");
+        table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
+        valGroup.forEach((pair) => {
+            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+        });
+
+    }
+</script>
+
+</html>
