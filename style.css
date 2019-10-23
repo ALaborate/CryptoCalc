@@ -27,14 +27,19 @@ table td {
     padding: 4px;
 }
 
-form label,
-form button {
-    font-size: 2em;
+
+
+body * {
+    font-size: 1cm;
 }
 
-form input {
-    font-size: 1em;
+form label,
+form button {
+    font-size: 1.4em;
+    display: block;
+    margin-top: 10px;
 }
+form input {font-size: 1em;}
 
 .comment {
     font-style: oblique;
