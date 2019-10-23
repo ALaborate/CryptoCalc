@@ -9,8 +9,8 @@
 <body>
     <div id="main">
         <a href="index.html">Home</a>
+        <h1>X to the Yth power modulo N</h1>
         <form>
-            <h1>X to the Yth power modulo N</h1>
             <label>X:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_x"></label>
             <label>Y:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_y"></label>
             <label>N:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_n"></label>
@@ -39,8 +39,8 @@
         }
         var res = Power(x, y, n);
         document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;" + res;
-        var checked = document.getElementById("alertAnswer").value;
-        if(checked=="on")
+        var checked = document.getElementById("alertAnswer").checked;
+        if(checked)
         {
             alert(res);
         }
