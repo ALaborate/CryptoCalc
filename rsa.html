@@ -14,7 +14,8 @@
         <form>
             <h1>RSA simple calculator</h1>
             <label>Type in N (system modulo):&nbsp;
-                <input type="text" , id="modulo">
+                <input type="text" onkeydown="kd(event);" id="modulo">
+                <input type="text" hidden>
             </label>
             <button onclick="Calculate();" type="button">Calculate!</button>
         </form><br>
@@ -52,6 +53,10 @@
     </div>
 </body>
 <script defer>
+    function kd(e) {
+        if (e.code == "Enter" || e.code=="NumpadEnter" )
+            Calculate();
+    }
     function Calculate() {
         var expr;
         try {
