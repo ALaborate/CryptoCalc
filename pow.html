@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>Power modulo N</title>
+</head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="calc.js" defer></script>
+
+<body>
+    <div id="main">
+        <form>
+            <h1>X to the Yth power modulo N</h1>
+            <label>X:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_x"></label>
+            <label>Y:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_y"></label>
+            <label>N:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_n"></label>
+            <button onclick="Calculate();" type="button">Calculate!</button>
+        </form>
+        <div id="Answer">X^YmodN:&nbsp;?</div>
+    </div>
+</body>
+<script type="text/javascript" defer>
+    function myfunc(e) {
+        if (e.code == "Enter")
+            Calculate();
+    }
+    function Calculate() {
+        var x = 0, y = 0, n = 0;
+        try {
+            x = Number(eval(document.getElementById("_x").value));
+            y = Number(eval(document.getElementById("_y").value));
+            n = Number(eval(document.getElementById("_n").value));
+        }
+        catch{
+            alert("There is input error. Please type in values that evaluate to numbers!");
+            document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;?";
+            return;
+        }
+        document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;" + Power(x, y, n);
+    }
+</script>
+
+</html>
