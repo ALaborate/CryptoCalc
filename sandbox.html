@@ -23,6 +23,7 @@
             <textarea id="code">
 //type your JS here
             </textarea><br>
+            <label>Alert answer <input type="checkbox" id="alertAnswer"></label><br>
             <button onclick="Execute();" type="button">Execute!</button>
             <button onclick="ClearConsole();" type="button">Clear console!</button>
         </form>
@@ -77,7 +78,13 @@
     console.log = CustomLog;
     function Execute() {
         var code = document.getElementById("code").value;
-        CustomLog(eval(code));
+        var ret = eval(code);
+        CustomLog(ret);
+        var checked = document.getElementById("alertAnswer").value;
+        if(checked=="on")
+        {
+            alert(ret);
+        }
     }
 </script>
 

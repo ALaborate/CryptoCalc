@@ -14,7 +14,8 @@
             <label>X:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_x"></label>
             <label>Y:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_y"></label>
             <label>N:&nbsp;<input type="text" onkeydown="myfunc(event);" id="_n"></label>
-            <button onclick="Calculate();" type="button">Calculate!</button>
+            <button onclick="Calculate();" type="button">Calculate!</button><br>
+            <label>Alert answer <input type="checkbox" id="alertAnswer" checked></label>
         </form>
         <div id="Answer">X^YmodN:&nbsp;?</div>
     </div>
@@ -36,7 +37,13 @@
             document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;?";
             return;
         }
-        document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;" + Power(x, y, n);
+        var res = Power(x, y, n);
+        document.getElementById("Answer").innerHTML = "X^YmodN:&nbsp;" + res;
+        var checked = document.getElementById("alertAnswer").value;
+        if(checked=="on")
+        {
+            alert(res);
+        }
     }
 </script>
 
