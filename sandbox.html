@@ -4,7 +4,12 @@
     <title>JS executor for mobile devices</title>
     <link rel="stylesheet" href="style.css">
     <style>
-
+        form textarea {
+            display: block;
+            width: 90%;
+            margin: 10 auto;
+            height: 60%;
+        }
     </style>
 </head>
 
@@ -15,11 +20,21 @@
             JS executor for mobile devices
         </h1>
         <form>
-            <textarea>
+            <textarea id="code">
 //type your JS here
-            </textarea>
+            </textarea><br>
+            <button onclick="Execute();" type="button">Execute!</button>
         </form>
     </div>
 </body>
+<script type="text/javascript" defer>
+    // console.log = function(){
+
+    // }
+    function Execute() {
+        var code = document.getElementById("code").value;
+        eval(code);
+    }
+</script>
 
 </html>
