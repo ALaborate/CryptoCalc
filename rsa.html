@@ -27,6 +27,7 @@
         <div id="fact_L_N">Factorization(L(N)):&nbsp;[?]</div>
         <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
         <div id="L_L_N">L(L(N)):&nbsp;?</div>
+        <div id="InputAlert">Be advised, N is not a product of two primes. That renders key pairs useless.</div>
 
         <table id="keyGroup">
             <caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>
@@ -54,7 +55,7 @@
 </body>
 <script defer>
     function kd(e) {
-        if (e.code == "Enter" || e.code=="NumpadEnter" )
+        if (e.code == "Enter" || e.code == "NumpadEnter")
             Calculate();
     }
     function Calculate() {
@@ -72,7 +73,11 @@
         var valModulo = Number(expr);
         var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
         if (valFactorization.length != 2) {
-            alert("Be advised, N is not a product of two primes! RSA keys would be messed up!");
+            // alert("Be advised, N is not a product of two primes! RSA keys would be messed up!");
+            document.getElementById("InputAlert").hidden = false;
+        }
+        else {
+            document.getElementById("InputAlert").hidden = true;
         }
 
         var keyModulo = GenericEuler(valModulo);

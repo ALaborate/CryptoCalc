@@ -39,3 +39,7 @@ form input {
 .comment {
     font-style: oblique;
 }
+
+#InputAlert{
+    color: red;
+}
