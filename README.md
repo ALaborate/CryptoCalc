@@ -1,6 +1,6 @@
 # CryptoCalc
 
-This program is intended to be portable helper for calculations of RSA cryptosystem examples done by hand. It is written to allow and encourage understanding of code rather than efficiently do the job.
+This peace of portable software is made to assist calculations of RSA and other cryptosystem exercises intended to be done by hand. It is written to allow and encourage understanding of code rather than efficiently do the job.
 
 The main function is calculation of RSA key pairs along with supplementary information. Side features also include:
 * building multiplicative group of keys (modulo L(N) where L is generic Euler function);
@@ -8,3 +8,5 @@ The main function is calculation of RSA key pairs along with supplementary infor
 * evaluating any numeric expression in js. That comes into use on mobile devices that has no dev tools in browser.
 
 You may download the only code file `rsa.html` from code directly or from latest release. Just keep in mind that releases here are often a bit outdated.
+
+Consider using [hosted version](https://omoh98.1mb.site) _if it is available to the time_ or download code from the latest release here on github. 
