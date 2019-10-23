@@ -1,6 +1,6 @@
 # CryptoCalc
 
-This peace of portable software is made to assist calculations of RSA and other cryptosystem exercises intended to be done by hand. It is written to allow and encourage understanding of code rather than efficiently do the job.
+This piece of portable software is made to assist calculations of RSA and other cryptosystem exercises intended to be done by hand. It is written to allow and encourage understanding of code rather than efficiently do the job.
 
 The main function is calculation of RSA key pairs along with supplementary information. Side features also include:
 * building multiplicative group of keys (modulo L(N) where L is generic Euler function);
