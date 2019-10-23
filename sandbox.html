@@ -24,16 +24,57 @@
 //type your JS here
             </textarea><br>
             <button onclick="Execute();" type="button">Execute!</button>
+            <button onclick="ClearConsole();" type="button">Clear console!</button>
         </form>
+        Console output:<br>
+        <div id="console">
+
+        </div>
     </div>
 </body>
 <script type="text/javascript" defer>
-    // console.log = function(){
+    function ClearConsole() {
+        document.getElementById("console").innerHTML = "";
+    }
+    function CustomToString(obj) {
+        if (typeof obj == "object") {
+            var ret = "";
+            if (obj instanceof Array) {
+                ret += "[ ";
+                for (var v in obj) {
+                    if (obj.hasOwnProperty(v))
+                        ret += " " + CustomToString(obj[v]) + ",";
+                }
+                ret = ret.substring(0, ret.length - 1);
+                ret += " ]"
+            }
+            else {
+                ret += "{ ";
+                for (var v in obj) {
+                    if (obj.hasOwnProperty(v))
+                        ret += " " + v + ":" + CustomToString(obj[v]) + ",";
+                }
+                ret = ret.substring(0, ret.length - 1);
+                ret += " }"
+            }
 
-    // }
+            return ret;
+        }
+        else if (typeof obj == "function") {
+            return typeof obj;
+        }
+        else return "" + obj;
+    }
+    function CustomLog() {
+        var c = document.getElementById("console");
+        for (var i = 0; i < arguments.length; i++) {
+            c.innerHTML += " " + CustomToString(arguments[i]) + "<br>";
+        }
+    }
+    console.log = CustomLog;
     function Execute() {
         var code = document.getElementById("code").value;
-        eval(code);
+        CustomLog(eval(code));
     }
 </script>
 
