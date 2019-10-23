@@ -4,7 +4,7 @@
     <title>
         RSA Calculations
     </title>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <!-- <script src="active.js" defer></script> -->
 <script type="text/javascript" src="calc.js" defer></script>
@@ -26,7 +26,7 @@
         <div id="fact_L_N">Factorization(L(N)):&nbsp;[?]</div>
         <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
         <div id="L_L_N">L(L(N)):&nbsp;?</div>
-        
+
         <table id="keyGroup">
             <caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>
             <tr>
@@ -51,5 +51,151 @@
 
     </div>
 </body>
+<script defer>
+    function Calculate() {
+        var expr;
+        try {
+            expr = eval(document.getElementById("modulo").value);
+            if (isNaN(expr))
+                throw "Input is not a number!";
+        }
+        catch{
+            alert("Your input is not valid. Please type in correct js string that evaluates to number.");
+            return;
+        }
+
+        var valModulo = Number(expr);
+        var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
+        if (valFactorization.length != 2) {
+            alert("Be advised, N is not a product of two primes! RSA keys would be messed up!");
+        }
+
+        var keyModulo = GenericEuler(valModulo);
+        var keyModuloFactorization = PoweredPrimeFactors(PrimeFactors(keyModulo));
+        var keygroup = MakeMultiplicativeGroup(keyModulo, keyModuloFactorization);
+
+        var orders = keygroup.map((v) => {
+            return Order(v, keyModulo);
+        });
+
+        var keys = [];
+        for (var i = 0; i < orders.length && i < keygroup.length; i++) {
+            if (orders[i] <= 2)
+                continue;
+            var enc = keygroup[i];
+            var dec = Power(enc, orders[i] - 1, keyModulo);
+            if (needTesting) {
+                console.assert((enc * dec) % keyModulo == 1, "Encryption and decryption product equals 1");
+            }
+            var contains = false;
+            keys.forEach((v) => {
+                if (v[0] == enc || v[0] == dec || v[1] == enc || v[1] == dec)
+                    contains = true;
+            });
+            if (!contains) {
+                keys.push([enc, dec]);
+            }
+        }
+
+        var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
+        valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
+
+        document.getElementById("N").innerHTML = "N: " + valModulo;
+        document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group of values</span>";
+        document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + keyModulo + "; <span class=\"comment\">Maximum element order in group of values, also modulo of group of keys</span>";
+        document.getElementById("phi_L_N").innerHTML = "&#x3d5;(L(N)):&nbsp;" + Euler(keyModulo) + "; <span class=\"comment\">Size of group of keys</span>";
+        var maxorder = -1;
+        orders.forEach((v) => {
+            if (v > maxorder)
+                maxorder = v;
+        });
+        document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + GenericEuler(keyModulo) + "; <span class=\"comment\">Maximum order of element in group of keys.</span>";
+
+
+        var showFactorization = (element, factorization, leadString = "") => {
+            factorization.forEach((v) => {
+                leadString += " " + v[0] + "<sup>" + v[1] + "</sup>x";
+            });
+            leadString = leadString.substring(0, leadString.length - 1);
+            element.innerHTML = leadString;
+        }
+
+        showFactorization(document.getElementById("fact_N"), valFactorization, "Factorization(N):");
+        showFactorization(document.getElementById("fact_L_N"), keyModuloFactorization, "Factorization(L(N)):");
+
+        if (needTesting) {
+            console.assert(keygroup.length == Euler(keyModulo), "Keygroup size equals phi(L(N))");
+            console.assert(maxorder == GenericEuler(keyModulo), "Maxorder equals L(L(N))");
+            orders.forEach((v) => {
+                console.assert(maxorder % v == 0, "Maxorder is divisible by order " + v);
+            });
+        }
+
+        var table = document.getElementById("keyGroup");
+        table.innerHTML = "<caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>\n<tr><th>Element</th><th>Order</th></tr>\n";
+        for (var i = 0; i < orders.length && i < keygroup.length; i++) {
+            table.innerHTML += "<tr><td>" + keygroup[i] + "</td><td>" + orders[i] + "</td></tr>\n";
+        }
+
+        table = document.getElementById("keyPairs");
+        table.innerHTML = "<caption>Key pairs for RSA</caption>\n<tr><th>Encryption</th><th>Decription</th></tr>";
+        keys.forEach((pair) => {
+            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+        });
+
+        table = document.getElementById("valGroup");
+        table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
+        valGroup.forEach((pair) => {
+            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+        });
+
+        if (needTesting) {
+            for (var i = 0; i < keys.length; i++) {
+                for (var j = 0; j <= 1; j++) {
+                    for (var k = 0; k < i; k++) {
+                        for (var l = 0; l <= 1; l++) {
+                            console.assert(keys[i][j] != keys[k][l], "Every key occurs only one time");
+                        }
+                    }
+                }
+
+            }
+
+            var fakeOrders = [];
+            var fakeKeys = [];
+            orders.forEach((o) => { fakeOrders.push(o); });
+            keygroup.forEach((k) => { fakeKeys.push(k); });
+            var toDelete = [];
+            keys.forEach((pair) => {
+                toDelete.push(pair[0]);
+                toDelete.push(pair[1]);
+            });
+            while (toDelete.length > 0) {
+                var del = toDelete.pop();
+                var dinx = -1;
+                fakeKeys.forEach((key, inx) => {
+                    if (key == del) {
+                        dinx = inx;
+                    }
+                });
+                if (dinx >= 0 && dinx < fakeKeys.length && dinx < fakeOrders.length) {
+                    fakeKeys = fakeKeys.filter((v, inx) => {
+                        return inx != dinx;
+                    });
+                    fakeOrders = fakeOrders.filter((v, inx) => {
+                        return inx != dinx;
+                    });
+                }
+            }
+            var scdOrder = true;
+            fakeOrders.forEach((v) => {
+                if (v > 2) {
+                    scdOrder = false;
+                }
+            });
+            console.assert(scdOrder, "All non-second-order elements are used for key pairs");
+        }
+    }
+</script>
 
 </html>
