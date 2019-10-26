@@ -26,6 +26,7 @@
             <tr>
                 <th>Element</th>
                 <th>Order</th>
+                <th>Inverse</th>
             </tr>
         </table>
     </div>
@@ -51,26 +52,21 @@
         var valFactorization = PoweredPrimeFactors(PrimeFactors(valModulo));
 
         var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
-        valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
+        valGroup = valGroup.map((v) => {
+            var o = Order(v, valModulo);
+            return [v, o, Power(v, o - 1, valModulo)];
+        });
 
         document.getElementById("N").innerHTML = "N: " + valModulo;
         document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group</span>";
         document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + GenericEuler(valModulo) + "; <span class=\"comment\">Maximum element order in group</span>";
 
-        var showFactorization = (element, factorization, leadString = "") => {
-            factorization.forEach((v) => {
-                leadString += " " + v[0] + "<sup>" + v[1] + "</sup>x";
-            });
-            leadString = leadString.substring(0, leadString.length - 1);
-            element.innerHTML = leadString;
-        }
-
-        showFactorization(document.getElementById("fact_N"), valFactorization, "Factorization(N):");
+        document.getElementById("fact_N").innerHTML = StrFactorization(valFactorization, "Factorization(N):");
 
         table = document.getElementById("valGroup");
-        table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
+        table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th><th>Inverse</th></tr>"
         valGroup.forEach((pair) => {
-            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td><td>" + pair[2] + "</td></tr>";
         });
 
     }

@@ -222,6 +222,19 @@
         return group;
     }
 
+    /**
+     * 
+     * @param {Array<Array<Number>>} poweredFactorization 
+     * @param {String} leadString 
+     */
+    var StrFactorization = (poweredFactorization, leadString = "") => {
+        poweredFactorization.forEach((v) => {
+            leadString += " " + v[0] + "<sup>" + v[1] + "</sup>x";
+        });
+        leadString = leadString.substring(0, leadString.length - 1);
+        return leadString;
+    }
+
     var needTesting = false; //true to enable assertions
     if (needTesting) {
         console.assert(Order(1, 17) == 0, "Order of 1");

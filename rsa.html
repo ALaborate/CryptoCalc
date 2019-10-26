@@ -123,16 +123,8 @@
         document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + GenericEuler(keyModulo) + "; <span class=\"comment\">Maximum order of element in group of keys.</span>";
 
 
-        var showFactorization = (element, factorization, leadString = "") => {
-            factorization.forEach((v) => {
-                leadString += " " + v[0] + "<sup>" + v[1] + "</sup>x";
-            });
-            leadString = leadString.substring(0, leadString.length - 1);
-            element.innerHTML = leadString;
-        }
-
-        showFactorization(document.getElementById("fact_N"), valFactorization, "Factorization(N):");
-        showFactorization(document.getElementById("fact_L_N"), keyModuloFactorization, "Factorization(L(N)):");
+        document.getElementById("fact_N").innerHTML = StrFactorization(valFactorization, "Factorization(N):");
+        document.getElementById("fact_L_N").innerHTML = StrFactorization(keyModuloFactorization, "Factorization(L(N)):");
 
         if (needTesting) {
             console.assert(keygroup.length == Euler(keyModulo), "Keygroup size equals phi(L(N))");
