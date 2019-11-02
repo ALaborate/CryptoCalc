@@ -29,14 +29,6 @@
         <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
         <div id="L_L_N">L(L(N)):&nbsp;?</div>
         <div id="InputAlert">Be advised, N is not a product of two primes. That renders key pairs useless.</div>
-
-        <table id="keyGroup">
-            <caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>
-            <tr>
-                <th>Element</th>
-                <th>Order</th>
-            </tr>
-        </table>
         <table id="keyPairs">
             <caption>Key pairs for RSA</caption>
             <tr>
@@ -44,13 +36,21 @@
                 <th>Decription</th>
             </tr>
         </table>
-        <table id="valGroup">
-            <caption>Multiplicative group modulo N <br>(Group of values)</caption>
+        <table id="keyGroup">
+            <caption>Multiplicative group modulo L(N) <br>(Group of keys)</caption>
             <tr>
                 <th>Element</th>
                 <th>Order</th>
             </tr>
         </table>
+
+        <!-- <table id="valGroup">
+            <caption>Multiplicative group modulo N <br>(Group of values)</caption>
+            <tr>
+                <th>Element</th>
+                <th>Order</th>
+            </tr>
+        </table> -->
 
     </div>
 </body>
@@ -108,8 +108,8 @@
             }
         }
 
-        var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
-        valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
+        // var valGroup = MakeMultiplicativeGroup(valModulo, valFactorization);
+        // valGroup = valGroup.map((v) => { return [v, Order(v, valModulo)]; });
 
         document.getElementById("N").innerHTML = "N: " + valModulo;
         document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group of values</span>";
@@ -146,11 +146,11 @@
             table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
         });
 
-        table = document.getElementById("valGroup");
-        table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
-        valGroup.forEach((pair) => {
-            table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
-        });
+        // table = document.getElementById("valGroup");
+        // table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th></tr>"
+        // valGroup.forEach((pair) => {
+        //     table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td></tr>";
+        // });
 
         if (needTesting) {
             for (var i = 0; i < keys.length; i++) {
