@@ -7,8 +7,9 @@
  */
 function Power(numb, pow, mod = Number.POSITIVE_INFINITY) {
     var ret = 1;
+    pow = pow%mod;
     var n = pow
-    if (Power.lastNumb == undefined || Power.lastNumb != numb) {
+    if (Power.lastNumb == undefined || Power.lastNumb != numb || Power.lastPow > pow || Power.lastMod != mod) {
         ;
     }
     else {
