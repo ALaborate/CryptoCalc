@@ -7,9 +7,13 @@
  */
 function Power(numb, pow, mod = Number.POSITIVE_INFINITY) {
     var ret = 1;
+    if (pow > mod)
+        pow = pow % GenericEuler(mod);
     for (var i = 0; i < pow; i++) {
         ret = (ret * numb) % mod;
     }
+    while (ret < 0)
+        ret += mod;
     return ret;
 }
 /**
@@ -46,7 +50,7 @@ function PrimeFactors(numb) {
 
     if (PrimeFactors.primes.length == 0 || PrimeFactors.primes[PrimeFactors.primes.length - 1] < numb) {
         PrimeFactors.primes = [];
-        for (var i = 2; i <= 2*numb; i++) {
+        for (var i = 2; i <= 2 * numb; i++) {
             PrimeFactors.primes.push(i);
         }
         for (var i = 0; i < PrimeFactors.primes.length; i++) {
@@ -54,10 +58,10 @@ function PrimeFactors(numb) {
         }
     }
     while (n > 1) {
-        for (var i = 0; i <  PrimeFactors.primes.length; i++) {
-            if (n %  PrimeFactors.primes[i] == 0) {
-                n = n /  PrimeFactors.primes[i];
-                ret.push( PrimeFactors.primes[i]);
+        for (var i = 0; i < PrimeFactors.primes.length; i++) {
+            if (n % PrimeFactors.primes[i] == 0) {
+                n = n / PrimeFactors.primes[i];
+                ret.push(PrimeFactors.primes[i]);
                 break;
             }
         }
