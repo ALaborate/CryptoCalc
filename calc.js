@@ -26,6 +26,7 @@ function Order(numb, mod) {
     }
     return ret;
 }
+
 /**
  * 
  * @param {Number} numb
@@ -33,7 +34,9 @@ function Order(numb, mod) {
  */
 function PrimeFactors(numb) {
     var ret = [];
-    var primes = [];
+    if (PrimeFactors.primes == undefined)
+        PrimeFactors.primes = [];
+    var primes = PrimeFactors.primes;
     var n = numb;
 
     if (numb == 1) {
@@ -41,19 +44,20 @@ function PrimeFactors(numb) {
         return ret;
     }
 
-    if (primes.length == 0 || primes[primes.length - 1] < numb) {
-        for (var i = 2; i <= numb; i++) {
-            primes.push(i);
+    if (PrimeFactors.primes.length == 0 || PrimeFactors.primes[PrimeFactors.primes.length - 1] < numb) {
+        PrimeFactors.primes = [];
+        for (var i = 2; i <= 2*numb; i++) {
+            PrimeFactors.primes.push(i);
         }
-        for (var i = 0; i < primes.length; i++) {
-            primes = primes.filter(function (v, inx) { return inx <= i || v % primes[i] != 0; });
+        for (var i = 0; i < PrimeFactors.primes.length; i++) {
+            PrimeFactors.primes = PrimeFactors.primes.filter(function (v, inx) { return inx <= i || v % PrimeFactors.primes[i] != 0; });
         }
     }
     while (n > 1) {
-        for (var i = 0; i < primes.length; i++) {
-            if (n % primes[i] == 0) {
-                n = n / primes[i];
-                ret.push(primes[i]);
+        for (var i = 0; i <  PrimeFactors.primes.length; i++) {
+            if (n %  PrimeFactors.primes[i] == 0) {
+                n = n /  PrimeFactors.primes[i];
+                ret.push( PrimeFactors.primes[i]);
                 break;
             }
         }
@@ -63,6 +67,7 @@ function PrimeFactors(numb) {
     console.assert(p == numb, "Prime factors product equals given number");
     return ret;
 }
+
 /**
  * 
  * @param {Number} numb 
