@@ -21,6 +21,7 @@
         <div id="fact_N">Factorization(N): </div>
         <div id="phi_N">&#x3d5;(N):&nbsp;?</div>
         <div id="L_N">L(N):&nbsp;?</div>
+        <div id="divs_L_N">Divisors(L(N)):&nbsp;?</div>
         <table id="valGroup">
             <caption>Multiplicative group modulo N</caption>
             <tr>
@@ -56,13 +57,18 @@
             var o = Order(v, valModulo);
             return [v, o, Power(v, o - 1, valModulo)];
         });
-
+        var maxOrder = GenericEuler(valModulo);
         document.getElementById("N").innerHTML = "N: " + valModulo;
         document.getElementById("phi_N").innerHTML = "&#x3d5;(N):&nbsp;" + Euler(valModulo) + "; <span class=\"comment\">Size of group</span>";
-        document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + GenericEuler(valModulo) + "; <span class=\"comment\">Maximum element order in group</span>";
+        document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + maxOrder + "; <span class=\"comment\">Maximum element order in group</span>";
 
         document.getElementById("fact_N").innerHTML = StrFactorization(valFactorization, "Factorization(N):");
-
+        
+        table = document.getElementById("divs_L_N")
+        table.innerHTML = "Divisors(L(N)): ";
+        Divisors(maxOrder).forEach((v) => { table.innerHTML += v + "; " });
+        table.innerHTML+="<span class=\"comment\">Possible orders in group</span>";
+        
         table = document.getElementById("valGroup");
         table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th><th>Inverse</th></tr>"
         valGroup.forEach((pair) => {

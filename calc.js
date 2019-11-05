@@ -221,7 +221,19 @@
         }
         return group;
     }
-
+/**
+ * 
+ * @param {Number} numb 
+ */
+function Divisors(numb) {
+    var ret = [];
+    for (var i = 1; i <= numb / 2; i++) {
+        if (numb % i == 0)
+            ret.push(i);
+    }
+    ret.push(numb);
+    return ret;
+}
     /**
      * 
      * @param {Array<Array<Number>>} poweredFactorization 

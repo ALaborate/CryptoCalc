@@ -28,6 +28,7 @@
         <div id="fact_L_N">Factorization(L(N)):&nbsp;[?]</div>
         <div id="phi_L_N">&#x3d5;(L(N)):&nbsp;?</div>
         <div id="L_L_N">L(L(N)):&nbsp;?</div>
+        <div id="divs_L_L_N">Divisors(L(L(N))):&nbsp;?</div>
         <div id="InputAlert">Be advised, N is not a product of two primes. That renders key pairs useless.</div>
         <table id="keyPairs">
             <caption>Key pairs for RSA</caption>
@@ -120,7 +121,8 @@
             if (v > maxorder)
                 maxorder = v;
         });
-        document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + GenericEuler(keyModulo) + "; <span class=\"comment\">Maximum order of element in group of keys.</span>";
+        var maxTheoreticalOrder = GenericEuler(keyModulo);
+        document.getElementById("L_L_N").innerHTML = "L(L(N)):&nbsp;" + maxTheoreticalOrder + "; <span class=\"comment\">Maximum order of element in group of keys.</span>";
 
 
         document.getElementById("fact_N").innerHTML = StrFactorization(valFactorization, "Factorization(N):");
@@ -139,6 +141,11 @@
         for (var i = 0; i < orders.length && i < keygroup.length; i++) {
             table.innerHTML += "<tr><td>" + keygroup[i] + "</td><td>" + orders[i] + "</td></tr>\n";
         }
+
+        table = document.getElementById("divs_L_L_N")
+        table.innerHTML = "Divisors(L(L(N))): ";
+        Divisors(maxTheoreticalOrder).forEach((v) => { table.innerHTML += v + "; " });
+        table.innerHTML+="<span class=\"comment\">Possible orders in group of keys</span>";
 
         table = document.getElementById("keyPairs");
         table.innerHTML = "<caption>Key pairs for RSA</caption>\n<tr><th>Encryption</th><th>Decription</th></tr>";
