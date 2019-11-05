@@ -1,29 +1,5 @@
 // alert("Here we are!");
-/**
- * 
- * @param {Number} numb 
- * @param {Number} pow 
- * @param {Number} mod 
- */
-function Power(numb, pow, mod = Number.POSITIVE_INFINITY) {
-    var ret = 1;
-    pow = pow%mod;
-    var n = pow
-    if (Power.lastNumb == undefined || Power.lastNumb != numb || Power.lastPow > pow || Power.lastMod != mod) {
-        ;
-    }
-    else {
-        ret = Power.lastRes;
-        n = pow - Power.lastPow;
-    }
-    for (var i = 0; i < n; i++) {
-        ret = (ret * numb) % mod;
-    }
-    Power.lastNumb = numb;
-    Power.lastPow = pow;
-    Power.lastRes = ret;
-    return ret;
-}
+
 
 /**
  * 
@@ -198,6 +174,32 @@ function GenericEuler(numb) {
 /**
  * 
  * @param {Number} numb 
+ * @param {Number} pow 
+ * @param {Number} mod 
+ */
+function Power(numb, pow, mod = Number.POSITIVE_INFINITY) {
+    var ret = 1;
+    if (pow > mod)
+        pow = pow % GenericEuler(mod);
+    var n = pow
+    if (Power.lastNumb == undefined || Power.lastNumb != numb || Power.lastPow > pow || Power.lastMod != mod) {
+        ;
+    }
+    else {
+        ret = Power.lastRes;
+        n = pow - Power.lastPow;
+    }
+    for (var i = 0; i < n; i++) {
+        ret = (ret * numb) % mod;
+    }
+    Power.lastNumb = numb;
+    Power.lastPow = pow;
+    Power.lastRes = ret;
+    return ret;
+}
+/**
+ * 
+ * @param {Number} numb 
  */
 function Divisors(numb) {
     var ret = [];
@@ -268,9 +270,13 @@ var StrFactorization = (poweredFactorization, leadString = "") => {
     return leadString;
 }
 
-var needTesting = false; //true to enable assertions
+var needTesting = true; //true to enable assertions
 if (needTesting) {
-    console.assert(Order(1, 17) == 0, "Order of 1");
+    console.assert(Order(1, 17) == 1, "Order of 1");
+    console.assert(Power(17, 0) == 1, "Power zero");
+    console.assert(Power(17, 5, 23) == 21, "Power of 17");
+    console.assert(Power(17, 6, 23) == 12, "Power of 17");
+    console.assert(Power(17, 5, 23) == 21, "Power of 17");
 
     console.assert(MakeMultiplicativeGroup(11 * 13).length == Euler(11 * 13), "length of multiplicative group equals Euler(modulus)");
     console.assert(MakeMultiplicativeGroup(7 * 5).length == Euler(7 * 5), "length of multiplicative group equals Euler(modulus)");
