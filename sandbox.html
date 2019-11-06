@@ -22,11 +22,11 @@
             JS executor for mobile devices
         </h1>
         <form>
+            <button onclick="Execute();" type="button">Execute!</button>
             <textarea id="code">
 //type your JS here
             </textarea><br>
             <label>Alert answer <input type="checkbox" id="alertAnswer"></label><br>
-            <button onclick="Execute();" type="button">Execute!</button>
             <button onclick="ClearConsole();" type="button">Clear console!</button>
         </form>
         Console output:<br>
@@ -67,7 +67,7 @@
             return typeof obj;
         }
         else return "" + obj;
-    }   
+    }
     var NativeLog = console.log;
     function CustomLog() {
         var c = document.getElementById("console");
@@ -76,15 +76,14 @@
             NativeLog(arguments[i]);
         }
     }
- 
+
     console.log = CustomLog;
     function Execute() {
         var code = document.getElementById("code").value;
         var ret = eval(code);
         CustomLog(ret);
         var checked = document.getElementById("alertAnswer").checked;
-        if(checked)
-        {
+        if (checked) {
             alert(ret);
         }
     }
