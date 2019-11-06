@@ -30,6 +30,7 @@
                 <th>Inverse</th>
             </tr>
         </table>
+        <div id="subGroups">All subgroups:&nbsp;?</div>
     </div>
 </body>
 <script defer>
@@ -63,18 +64,27 @@
         document.getElementById("L_N").innerHTML = "L(N):&nbsp;" + maxOrder + "; <span class=\"comment\">Maximum element order in group</span>";
 
         document.getElementById("fact_N").innerHTML = StrFactorization(valFactorization, "Factorization(N):");
-        
+
         table = document.getElementById("divs_L_N")
         table.innerHTML = "Divisors(L(N)): ";
         Divisors(maxOrder).forEach((v) => { table.innerHTML += v + "; " });
-        table.innerHTML+="<span class=\"comment\">Possible orders in group</span>";
-        
+        table.innerHTML += "<span class=\"comment\">Possible orders in group</span>";
+
         table = document.getElementById("valGroup");
         table.innerHTML = "<caption>Multiplicative group modulo N <br>(Group of values)</caption><tr><th>Element</th><th>Order</th><th>Inverse</th></tr>"
         valGroup.forEach((pair) => {
             table.innerHTML += "<tr><td>" + pair[0] + "</td><td>" + pair[1] + "</td><td>" + pair[2] + "</td></tr>";
         });
 
+        table = document.getElementById("subGroups");
+        table.innerHTML = "<hr>All subgroups: <hr>";
+        var subGroups = MakeMultiplicativeSubGroups(valGroup);
+        subGroups.forEach((g) => {
+            var s = "Power: " + g.length + "; Values:<br>";
+            g.forEach((v) => { s += v + "; "; });
+            s += "<hr>";
+            table.innerHTML += s;
+        });
     }
 </script>
 
