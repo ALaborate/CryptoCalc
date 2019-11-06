@@ -230,6 +230,109 @@ function MakeMultiplicativeGroup(modulo, factorization) {
     }
     return group;
 }
+
+/**
+ * 
+ * @param {Array<T>} arr 
+ * @param {function} less 
+ */
+function Sort(arr, less) {
+    if (less == undefined)
+        less = (lhs, rhs) => { return lhs < rhs; };
+    for (var i = 0; i < arr.length; i++) {
+        var min = i;
+        for (var j = i + 1; j < arr.length; j++) {
+            if (less(arr[j], arr[min])) {
+                min = j;
+            }
+        }
+        var b = arr[i];
+        arr[i] = arr[min];
+        arr[min] = b;
+    }
+}
+
+/**
+ * 
+ * @param {Array<Array<Number>>} groupWithOrders 
+ */
+function MakeMultiplicativeSubGroups(groupWithOrders) {
+    var modulo = groupWithOrders[groupWithOrders.length - 1][0] + 1;
+    var ret = [[1]];
+    ret.pop();
+    /**
+ * 
+ * @param {Array<Number>} arLeft 
+ * @param {Array<Number>} arRight 
+ */
+    var compareArray = (arLeft, arRight) => {
+        if (arLeft.length != arRight.length)
+            return false;
+        for (var i = 0; i < arLeft.length; i++) {
+            if (arLeft[i] !== arRight[i])
+                return false;
+        }
+        return true;
+    }
+    groupWithOrders.forEach((el) => {
+        var n = el[0];
+        var o = el[1];
+        if (n == 1 || o == modulo - 1)
+            return;
+
+        var sg = [];
+
+        for (var i = 1; i < o; i++) {
+            sg.push(n);
+            n = n * el[0] % modulo;
+        }
+        if (needTesting)
+            console.assert(n == 1, "element in orderth power equals 1");
+        sg.push(n);
+
+        Sort(sg);
+        var absent = true;
+        ret.forEach((v) => {
+            if (compareArray(v, sg))
+                absent = false;
+        });
+        if (absent)
+            ret.push(sg);
+
+    });
+    Sort(ret, (lhs, rhs) => { return lhs.length < rhs.length; });
+    if (needTesting) {
+        ret.forEach((group) => {
+            group.forEach((v) => {
+                var cont = false;
+                groupWithOrders.forEach((el) => {
+                    if (el[0] == v)
+                        cont = true;
+                });
+                console.assert(cont, "Big group contains subgroup element " + v);
+            });
+        });
+
+        var bigGroup = [];
+        groupWithOrders.forEach((v) => { bigGroup.push(v[0]); });
+
+        var vectorProduct = [];
+        ret[ret.length - 1].forEach((bv) => {
+            ret[0].forEach((sv) => {
+                vectorProduct.push(bv * sv);
+            });
+        });
+        vectorProduct = vectorProduct.map((v) => {
+            v = v % modulo;
+            while (v < 0)
+                v += modulo;
+            return v;
+        });
+        Sort(vectorProduct);
+        // console.assert(compareArray(bigGroup, vectorProduct), "Big group is a product of small groups");
+    }
+    return ret;
+}
 /**
  * 
  * @param {Number} numb 
@@ -256,9 +359,13 @@ var StrFactorization = (poweredFactorization, leadString = "") => {
     return leadString;
 }
 
-var needTesting = false; //true to enable assertions
+var needTesting = true; //true to enable assertions
 if (needTesting) {
-    console.assert(Order(1, 17) == 0, "Order of 1");
+    console.assert(Order(1, 17) == 1, "Order of 1");
+    console.assert(Power(17, 0) == 1, "Power zero");
+    console.assert(Power(17, 5, 23) == 21, "Power of 17");
+    console.assert(Power(17, 6, 23) == 12, "Power of 17");
+    console.assert(Power(17, 5, 23) == 21, "Power of 17");
 
     console.assert(MakeMultiplicativeGroup(11 * 13).length == Euler(11 * 13), "length of multiplicative group equals Euler(modulus)");
     console.assert(MakeMultiplicativeGroup(7 * 5).length == Euler(7 * 5), "length of multiplicative group equals Euler(modulus)");
